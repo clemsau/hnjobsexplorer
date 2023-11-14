@@ -5,26 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>hnjobsexplorer</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <script src="https://unpkg.com/htmx.org@1.9.8" integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="container-fluid">
-    <ul>
-        <li>
-            <a href="./" class="contrast" onclick="event.preventDefault()"
-            ><strong>Hnjobsexplorer</strong></a
-            >
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <select id="month" required>
-                {% for thread in threads %}
-                <option value="{{ thread.date }}">{{ thread.date }}</option>
-                {% endfor %}
-            </select>
-        </li>
-    </ul>
-</nav>
-    <div>Hello world</div>
+<div>
+    <nav class="container-fluid">
+        <ul>
+            <li>
+                <a href="./" class="contrast" onclick="event.preventDefault()"
+                ><strong>Hnjobsexplorer</strong></a
+                >
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <select id="month" required>
+                    {% for thread in threads %}
+                    <option value="{{ thread.date }}">{{ thread.date }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<main class="container">
+    <div class="grid">
+        <h2 style="text-align: center">Ask HN: Who is hiring? (November 2023)</h2>
+    </div>
+    <div class="grid-search">
+        <form>
+            <label for="search">Search</label>
+            <input type="text" id="search" name="search" placeholder="Python, Remote, Frontend">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    {% for job in jobs %}
+    <div class="grid">
+        <details>
+            <summary role="button" class="secondary">{{ job.body | truncatechars:100 }}</summary>
+            <p>{{ job.body | safe }}</p>
+        </details>
+    </div>
+    {% endfor %}
+</main>
 </body>
+<style>
+    .grid-search {
+        padding: 3em;
+    }
+</style>
 </html>
