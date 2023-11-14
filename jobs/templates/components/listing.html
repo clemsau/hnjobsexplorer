@@ -1,0 +1,8 @@
+{% for job in jobs %}
+<div class="grid">
+    <details>
+        <summary role="button" class="secondary">{{ job.body | truncatechars:100 }}</summary>
+        <p>{{ job.body | safe }}</p>
+    </details>
+</div>
+{% endfor %}

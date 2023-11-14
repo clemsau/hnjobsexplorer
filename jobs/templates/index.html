@@ -19,11 +19,7 @@
         </ul>
         <ul>
             <li>
-                <select id="month" required>
-                    {% for thread in threads %}
-                    <option value="{{ thread.date }}">{{ thread.date }}</option>
-                    {% endfor %}
-                </select>
+
             </li>
         </ul>
     </nav>
@@ -34,20 +30,30 @@
         <h2 style="text-align: center">Ask HN: Who is hiring? (November 2023)</h2>
     </div>
     <div class="grid-search">
-        <form>
+        <form hx-post="/" hx-target="#listing">
+            {% csrf_token %}
             <label for="search">Search</label>
-            <input type="text" id="search" name="search" placeholder="Python, Remote, Frontend">
+            <div class="grid">
+                <input type="text" id="search" name="search" placeholder="Python, Remote, Frontend">
+                <select id="current_thread_id" name="current_thread_id" hx-post="/" hx-target="#listing" required>
+                    {% for thread in threads %}
+                    <option value="{{ thread.id }}">{{ thread.date }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="submit">Submit</button>
         </form>
     </div>
-    {% for job in jobs %}
-    <div class="grid">
-        <details>
-            <summary role="button" class="secondary">{{ job.body | truncatechars:100 }}</summary>
-            <p>{{ job.body | safe }}</p>
-        </details>
+    <div class="container" id="listing">
+        {% for job in jobs %}
+        <div class="grid">
+            <details>
+                <summary role="button" class="secondary">{{ job.body | truncatechars:100 }}</summary>
+                <p>{{ job.body | safe }}</p>
+            </details>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </main>
 </body>
 <style>
