@@ -2,10 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>hnjobsexplorer</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
 </head>
 <body>
+<nav class="container-fluid">
+    <ul>
+        <li>
+            <a href="./" class="contrast" onclick="event.preventDefault()"
+            ><strong>Hnjobsexplorer</strong></a
+            >
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <select id="month" required>
+                {% for thread in threads %}
+                <option value="{{ thread.date }}">{{ thread.date }}</option>
+                {% endfor %}
+            </select>
+        </li>
+    </ul>
+</nav>
     <div>Hello world</div>
 </body>
 </html>
