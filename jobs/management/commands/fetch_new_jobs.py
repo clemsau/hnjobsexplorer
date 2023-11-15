@@ -11,24 +11,30 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            latest_thread = Thread.objects.last()
-            response = requests.get(HN_ITEM_URL.format(latest_thread.id))
-            if response.status_code != 200:
-                raise CommandError('Unable to fetch latest jobs')
+            new_kids = list()
+            latest_threads = Thread.objects.all().order_by('timestamp')[:2]
+            for latest_thread in latest_threads:
+                response = requests.get(HN_ITEM_URL.format(latest_thread.id))
+                if response.status_code != 200:
+                    raise CommandError('Unable to fetch latest jobs')
 
-            kids = set(response.json()['kids'])
-            saved_kids = set(map(int, [job.id for job in latest_thread.job_set.all()]))
-            new_kids = kids - saved_kids
+                kids = set(response.json()['kids'])
+                saved_kids = set(map(int, [job.id for job in latest_thread.job_set.all()]))
+                new_kids += list(kids - saved_kids)
+
             for job_id in new_kids:
+                job, created = Job.objects.get_or_create(id=job_id, thread=latest_thread)
+                if not created:
+                    continue
+
                 response = requests.get(HN_ITEM_URL.format(job_id))
                 if response.status_code != 200:
                     raise CommandError('Unable to fetch latest jobs')
 
-                job = Job.objects.get_or_create(id=job_id, thread=latest_thread)[0]
                 job.body = response.json().get('text', '')
                 if not job.body:
-                    job.delete()
-                    continue
+                    job.deactivated = True
+
                 job.save()
 
         except Exception as e:

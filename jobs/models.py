@@ -13,3 +13,4 @@ class Job(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     body = models.TextField()
+    deactivated = models.BooleanField(default=False)

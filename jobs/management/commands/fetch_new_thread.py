@@ -16,7 +16,7 @@ class Command(BaseCommand):
                 raise CommandError('Unable to fetch latest thread')
 
             submitted = response.json()['submitted']
-            for thread_id in submitted[:3]:
+            for thread_id in submitted[:6]:
                 response = requests.get(HN_ITEM_URL.format(thread_id))
                 if response.status_code != 200:
                     raise CommandError('Unable to fetch latest thread')
