@@ -21,8 +21,10 @@ class Command(BaseCommand):
                 kids = set(response.json()['kids'])
                 saved_kids = set(map(int, [job.id for job in latest_thread.job_set.all()]))
                 new_kids += list(kids - saved_kids)
+                print(latest_thread)
 
             for job_id in new_kids:
+                print(new_kids)
                 job, created = Job.objects.get_or_create(id=job_id, thread=latest_thread)
                 if not created:
                     continue
