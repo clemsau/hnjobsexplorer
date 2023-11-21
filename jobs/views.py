@@ -15,7 +15,9 @@ class IndexView(View, ContextMixin):
         return context
 
     def get(self, request, *args, **kwargs):
-        kwargs["current_thread_id"] = Thread.objects.last().id
+        kwargs["current_thread_id"] = "0"
+        if Thread.objects.last():
+            kwargs["current_thread_id"] = Thread.objects.last().id
         return render(request, self.template_name, self.get_context_data(**kwargs))
 
     def post(self, request, *args, **kwargs):
