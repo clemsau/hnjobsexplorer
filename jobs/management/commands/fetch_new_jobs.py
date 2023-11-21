@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 saved_kids = set(map(int, [job.id for job in latest_thread.job_set.all()]))
 
                 for job_id in (kids - saved_kids):
-                    job, created = Job.objects.get_or_create(id=job_id, thread=latest_thread)
+                    job, created = Job.objects.get_or_create(id=job_id)
                     if not created:
                         continue
 
@@ -30,6 +30,7 @@ class Command(BaseCommand):
                         raise CommandError('Unable to fetch latest jobs')
 
                     job.body = response.json().get('text', '')
+                    job.thread = latest_thread
                     if not job.body:
                         job.deactivated = True
 
