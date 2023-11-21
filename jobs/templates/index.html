@@ -12,14 +12,7 @@
     <nav class="container-fluid">
         <ul>
             <li>
-                <a href="./" class="contrast" onclick="event.preventDefault()"
-                ><strong>Hnjobsexplorer</strong></a
-                >
-            </li>
-        </ul>
-        <ul>
-            <li>
-
+                <a href="./" class="contrast" onclick="event.preventDefault()"><strong>Hnjobsexplorer</strong></a>
             </li>
         </ul>
     </nav>
@@ -45,6 +38,9 @@
         </form>
     </div>
     <div class="container" id="listing">
+        <div class="grid">
+            <small style="margin:0.3rem">{{ jobs_count }} results</small>
+        </div>
         {% for job in jobs %}
         <div class="grid">
             <details>

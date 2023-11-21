@@ -12,6 +12,7 @@ class IndexView(View, ContextMixin):
         context = super().get_context_data(**kwargs)
         context["threads"] = Thread.objects.all()
         context["jobs"] = Job.objects.filter(thread=kwargs["current_thread_id"])
+        context["jobs_count"] = len(context["jobs"])
         return context
 
     def get(self, request, *args, **kwargs):
@@ -24,4 +25,5 @@ class IndexView(View, ContextMixin):
         kwargs["current_thread_id"] = request.POST["current_thread_id"]
         context = self.get_context_data(**kwargs)
         context["jobs"] = context["jobs"].filter(body__icontains=request.POST["search"])
+        context["jobs_count"] = len(context["jobs"])
         return render(request, "components/listing.html", context)
