@@ -11,7 +11,7 @@ class IndexView(View, ContextMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["threads"] = Thread.objects.all()
-        context["jobs"] = Job.objects.filter(thread=kwargs["current_thread_id"])
+        context["jobs"] = Job.objects.filter(thread=kwargs["current_thread_id"], deactivated=False)
         context["jobs_count"] = len(context["jobs"])
         return context
 
