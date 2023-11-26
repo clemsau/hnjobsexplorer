@@ -19,11 +19,19 @@ class IndexView(View, ContextMixin):
         kwargs["current_thread_id"] = "0"
         if Thread.objects.last():
             kwargs["current_thread_id"] = Thread.objects.last().id
+
         return render(request, self.template_name, self.get_context_data(**kwargs))
 
     def post(self, request, *args, **kwargs):
         kwargs["current_thread_id"] = request.POST["current_thread_id"]
         context = self.get_context_data(**kwargs)
-        context["jobs"] = context["jobs"].filter(body__icontains=request.POST["search"])
+        keywords = request.POST["search"].strip().split(",")
+
+        if len(keywords) > 3:
+            keywords = keywords[:3]
+
+        for keyword in keywords:
+            context["jobs"] = context["jobs"].filter(body__icontains=keyword)
+
         context["jobs_count"] = len(context["jobs"])
         return render(request, "components/listing.html", context)

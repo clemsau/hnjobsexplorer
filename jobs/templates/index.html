@@ -25,7 +25,7 @@
     <div class="grid-search">
         <form hx-post="/" hx-target="#listing">
             {% csrf_token %}
-            <label for="search">Search</label>
+            <label for="search">Keywords (3 max)</label>
             <div class="grid">
                 <input type="text" id="search" name="search" placeholder="Python, Remote, Frontend">
                 <select id="current_thread_id" name="current_thread_id" hx-post="/" hx-target="#listing" required>
