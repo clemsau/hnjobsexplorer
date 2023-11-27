@@ -36,7 +36,7 @@ class IndexView(View, ContextMixin):
             context["jobs"] = context["jobs"].filter(body__icontains=keyword)
 
         context["jobs"] = set_seen_jobs(context["jobs"], self.request.session.get("seen_jobs", {}))
-        if request.POST.get("hideSeed"):
+        if request.POST.get("hideSeen"):
             for job in context["jobs"]:
                 if job.seen:
                     context["jobs"] = context["jobs"].exclude(id=job.id)
