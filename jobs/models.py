@@ -14,3 +14,4 @@ class Job(models.Model):
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
     body = models.TextField()
     deactivated = models.BooleanField(default=False)
+    seen = False

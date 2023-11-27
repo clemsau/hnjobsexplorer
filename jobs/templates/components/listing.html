@@ -3,8 +3,10 @@
 </div>
 {% for job in jobs %}
 <div class="grid">
-    <details>
-        <summary role="button" class="secondary">{{ job.body | truncatechars:100 }}</summary>
+    <details hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-vals='{"seen": "{{ job.id }}"}' hx-post="/seen" hx-swap="none" onclick="setSeen(this)">
+        <summary role="button" class="secondary jobSummary" {% if job.seen %}style="color: #c8c8c8"{% endif %}>
+            {% if not job.seen %}<span class="dot"></span> {% endif %}{{ job.body | truncatechars:100 }}
+        </summary>
         <p>{{ job.body | safe }}</p>
     </details>
 </div>
