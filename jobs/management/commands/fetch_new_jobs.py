@@ -17,11 +17,11 @@ class Command(BaseCommand):
                 if response.status_code != 200:
                     raise CommandError('Unable to fetch latest jobs')
 
-                kids = set(response.json()['kids'])
-                saved_kids = set(map(int, [job.id for job in latest_thread.job_set.all()]))
+                kids = set(map(str, response.json()['kids']))
+                saved_kids = set([job.id for job in latest_thread.job_set.all()])
 
                 for job_id in (kids - saved_kids):
-                    job, created = Job.objects.get_or_create(id=job_id)
+                    job, created = Job.objects.get_or_create(id=job_id, thread=latest_thread)
                     if not created:
                         continue
 
@@ -30,7 +30,6 @@ class Command(BaseCommand):
                         raise CommandError('Unable to fetch latest jobs')
 
                     job.body = response.json().get('text', '')
-                    job.thread = latest_thread
                     if not job.body:
                         job.deactivated = True
 
