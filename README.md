@@ -1,5 +1,9 @@
 # hnjobsexplorer
 
+To run the project locally:
+- install the requirements from `requirements.txt`
+- Create a `.env` file in the `hnjobsexplorer` according to the template
+
 ## Management commands
 
 In order to simply get the jobs, two managements have been created:
