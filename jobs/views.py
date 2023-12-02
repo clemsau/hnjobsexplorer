@@ -11,7 +11,7 @@ class IndexView(View, ContextMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["threads"] = Thread.objects.all()
+        context["threads"] = Thread.objects.all().order_by('-timestamp')
         context["jobs"] = Job.objects.filter(thread=kwargs["current_thread_id"], deactivated=False)
         context["jobs"] = set_seen_jobs(context["jobs"], self.request.session.get("seen_jobs", {}))
         context["jobs_count"] = len(context["jobs"])
