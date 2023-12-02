@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            latest_threads = Thread.objects.all().order_by('timestamp')[:2]
+            latest_threads = Thread.objects.all().order_by('-timestamp')[:2]
             for latest_thread in latest_threads:
                 response = requests.get(HN_ITEM_URL.format(latest_thread.id))
                 if response.status_code != 200:
